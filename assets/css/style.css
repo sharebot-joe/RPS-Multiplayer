@@ -1,0 +1,28 @@
+body {
+	margin: 0 auto;
+}
+.header, .login {
+	margin: 20px auto;
+}
+.playerstatus {
+	background: #F4F1BB ;
+}
+.gamestatus {
+	background: #E6EBE0 ;
+}
+[class*=col] {
+	text-align: center;
+}
+.player-1, .player-2, .results {
+	height: 250px;
+	margin: 20px;
+	padding: 20px;
+	border: 1px solid black;
+}
+.image img {
+	max-width: 40%;
+}
+#rock, #paper, #scissors {
+	
+	overflow: hidden;
+}
