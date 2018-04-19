@@ -14,15 +14,40 @@ body {
 	text-align: center;
 }
 .player-1, .player-2, .results {
+	width: 100%;
 	height: 250px;
-	margin: 20px;
+	margin-top: 20px;
 	padding: 20px;
 	border: 1px solid black;
 }
+
 .image img {
-	max-width: 40%;
+	width: 100%;
 }
+
 #rock, #paper, #scissors {
-	
+	display: block;
 	overflow: hidden;
+}
+
+.p1-panel button {
+  display: block;
+  margin: 0 auto;
+}
+/* Text CSS */
+.score {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	bottom: 25px;
+}
+
+.player-name {
+	margin: 0 auto;
+}
+
+.well, .player-name, .results {
+	font-weight: bold;
+	font-size: 1.5rem;
 }

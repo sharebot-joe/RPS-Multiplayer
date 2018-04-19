@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 
   // Initialize Firebase
@@ -12,45 +11,54 @@ $(document).ready(function() {
 
   firebase.initializeApp(config);
   var dataRef = firebase.database();
+  dataRef.ref().remove()
+  var playersRef = dataRef.ref('players')
+
   // Initial Values
   var numPlayers = 0;
   var wins = 0;
   var losses = 0;
-  var playerOneIsReady = 0;
-  var playerTwoIsReady = 0;
-
+  
 
   // Capture Button Click
   $("#submit-button").on("click", function(event) {
-  	dataRef.ref().remove()
-  	var playersRef = dataRef.ref("players");
-    event.preventDefault();
-    
-    // Don't forget to provide initial data to your Firebase database.
-    var name = $("#name").val().trim();
-    console.log(name)
-    var newPlayerIndex = numPlayers + 1
+  	
+  	event.preventDefault();
 
-    playersRef.set({
-    	[newPlayerIndex]: {
-    		name: name,
-    		wins: wins,
-      	losses: losses
-    	}
-    });
-    numPlayers++;
-    $(".login").hide();
+    numPlayers++
+    
+    // Taking text input and storing in Firebase
+    var name = $("#name").val().trim();
+    
+    var playerIndexStr = numPlayers.toString()
+    console.log ('typeof(playerIndex): ' + typeof(playerIndex))
+    var newPlayer = {
+        name: name,
+        wins: wins,
+        losses: losses
+      }
+
+    playersRef.child(playerIndexStr).set(newPlayer);
+
+    // Clearing input text
+    $('.login').val('');
+
+    // if (numPlayers === 2) {
+    //   $(".login").hide();
+    // }
+  
   });
 
-  dataRef.ref().on("child_added", function(childSnapshot) {
+  playersRef.on("child_added", function(childSnapshot) {
   	console.log('childSnapshot: ' + childSnapshot.val())
   	console.log('childSnapshot.name: ' + childSnapshot.name)
   	console.log('childSnapshot.key: ' + childSnapshot.key)
-  	if (childSnapshot.key === 1) {
+  	if (childSnapshot.key === '1') {
   		loadPlayerOne(childSnapshot);
   	}
-  	if (childSnapshot.key === 2) {
+  	if (childSnapshot.key === '2') {
   		loadPlayerTwo(childSnapshot);
+      runGame()  // Start game when two players signed in
   	}
   }, function (errorObject) {
   	console.log("The read failed: " + errorObject.code);
@@ -58,26 +66,97 @@ $(document).ready(function() {
 
   // Functions
   function loadPlayerOne(snapshot) {
-
     // Log everything that's coming out of snapshot
-    console.log(snapshot.val().name);
-    console.log(snapshot.val().wins);
-    console.log(snapshot.val().losses);
+
+    var playerName = snapshot.val().name;
+    var playerNum = snapshot.key
+    
+    console.log('loading playerName: ' + playerName);
+    console.log('loading playerNum: ' + playerNum);
 
     // full list of items to the well
-    $(".playerstatus").html("<div class='well'>Hi <span class='player-name'> " + snapshot.val().name +
-      "! You are player </span><span>" + snapshot.key +
+    $(".playerstatus").html("<div class='well'>Hi <span class='player-name'> " + playerName +
+      "! You are player </span><span>" + playerNum +
       " </span></div>");
 
-
     // display player name
-    $('.player-1 .player-name').html(snapshot.val().name);
+    $('.player-1 .player-name').html(playerName);
 
     // display score in box
-    $('.player-1 .score').attr('visibility', 'visible');
-    playerOneIsReady = 1;
+    $('.player-1 .score').css('visibility', 'visible');
 
-  };
+    // Hide text input on submit
+    // $(".login").hide();
+  }
+
+  function loadPlayerTwo(snapshot) {
+    // Log everything that's coming out of snapshot
+
+    var playerName = snapshot.val().name;
+    var playerNum = snapshot.key
+    
+    console.log('loading playerName: ' + playerName);
+    console.log('loading playerNum: ' + playerNum);
+
+    // full list of items to the well
+    $(".playerstatus").html("<div class='well'>Hi <span class='player-name'> " + playerName +
+      "! You are player </span><span>" + playerNum +
+      " </span></div>");
+
+    // display player name
+    $('.player-2 .player-name').html(playerName);
+
+    // display score in box
+    $('.player-2 .score').css('visibility', 'visible');
+    $(".login").hide();
+  }
+  function runGame() {
+    var turnRef = dataRef.ref('turn')
+
+    playTurn()
+
+    // Increment 'turn' count
+    turnRef.transaction(function(searches) {
+      if (searches) {
+        searches = searches + 1;
+      }
+      return (searches || 0) + 1;
+    });
+
+    // while(numPlayers > 1) {
+    //   playTurn()
+
+    //   // Increment 'turn' count
+    //   turnRef.transaction(function(searches) {
+    //     if (searches) {
+    //       searches = searches + 1;
+    //     }
+    //     return (searches || 0) + 1;
+    //   });
+    // }
+  }
+  function playTurn () {
+  	playerOneTurn()
+    // playerTwoTurn()
+    // updateScore()
+    
+  }
+  function playerOneTurn() {
+    // display buttons
+    console.log('time to display buttons')
+    var rockBtn = $('<button type="button" class="btn btn-info rock-btn">Rock</button>')
+    var paperBtn = $('<button type="button" class="btn btn-info paper-btn">Paper</button>')
+    var scissorsBtn = $('<button type="button" class="btn btn-info scissors-btn">Scissors</button>')
+    $('.p1-panel').prepend(scissorsBtn, '<br/>', paperBtn, '<br/>', rockBtn)
+    // $('.p1-panel').prepend(paperBtn)
+    // $('.p1-panel').prepend(rockBtn)
+
+    // playersRef.child(playerIndexStr).set(newPlayer);
+
+  }
+  $(document).on('click', '.scissors-btn', function() {
+    console.log('scissors btn clicked')
+  });
   // function loadPlayerTwo() {
   // 	dataRef.ref().on("child_added", function(snapshot) {
 
@@ -120,9 +199,11 @@ $(document).ready(function() {
 
   // 	}
   // }
-  // // Run main program 
-  // // loadPlayerOne();
-  // // loadPlayerTwo();
+  // Run main program 
+  // loadPlayerOne();
+  // loadPlayerTwo();
+  
+  // startGame();
   // while (playerOneIsReady && playerTwoIsReady) {
   // 	startGame();
   // }
