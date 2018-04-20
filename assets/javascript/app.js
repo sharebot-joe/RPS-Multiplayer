@@ -18,25 +18,27 @@ $(document).ready(function() {
   var numPlayers = 0;
   var wins = 0;
   var losses = 0;
-  
+  var p1Clicked = ''
+  var p2Clicked = ''
+
 
   // Capture Button Click
   $("#submit-button").on("click", function(event) {
-  	
-  	event.preventDefault();
+
+    event.preventDefault();
 
     numPlayers++
-    
+
     // Taking text input and storing in Firebase
     var name = $("#name").val().trim();
-    
+
     var playerIndexStr = numPlayers.toString()
-    console.log ('typeof(playerIndex): ' + typeof(playerIndex))
+    console.log('typeof(playerIndex): ' + typeof(playerIndex))
     var newPlayer = {
-        name: name,
-        wins: wins,
-        losses: losses
-      }
+      name: name,
+      wins: wins,
+      losses: losses
+    }
 
     playersRef.child(playerIndexStr).set(newPlayer);
 
@@ -46,23 +48,23 @@ $(document).ready(function() {
     // if (numPlayers === 2) {
     //   $(".login").hide();
     // }
-  
+
   });
 
   playersRef.on("child_added", function(childSnapshot) {
-  	console.log('childSnapshot: ' + childSnapshot.val())
-  	console.log('childSnapshot.name: ' + childSnapshot.name)
-  	console.log('childSnapshot.key: ' + childSnapshot.key)
-  	if (childSnapshot.key === '1') {
-  		loadPlayerOne(childSnapshot);
-  	}
-  	if (childSnapshot.key === '2') {
-  		loadPlayerTwo(childSnapshot);
-      runGame()  // Start game when two players signed in
-  	}
-  }, function (errorObject) {
-  	console.log("The read failed: " + errorObject.code);
-  }); 
+    console.log('childSnapshot: ' + childSnapshot.val())
+    console.log('childSnapshot.name: ' + childSnapshot.name)
+    console.log('childSnapshot.key: ' + childSnapshot.key)
+    if (childSnapshot.key === '1') {
+      loadPlayerOne(childSnapshot);
+    }
+    if (childSnapshot.key === '2') {
+      loadPlayerTwo(childSnapshot);
+      runGame() // Start game when two players signed in
+    }
+  }, function(errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });
 
   // Functions
   function loadPlayerOne(snapshot) {
@@ -70,7 +72,7 @@ $(document).ready(function() {
 
     var playerName = snapshot.val().name;
     var playerNum = snapshot.key
-    
+
     console.log('loading playerName: ' + playerName);
     console.log('loading playerNum: ' + playerNum);
 
@@ -94,7 +96,7 @@ $(document).ready(function() {
 
     var playerName = snapshot.val().name;
     var playerNum = snapshot.key
-    
+
     console.log('loading playerName: ' + playerName);
     console.log('loading playerNum: ' + playerNum);
 
@@ -110,6 +112,7 @@ $(document).ready(function() {
     $('.player-2 .score').css('visibility', 'visible');
     $(".login").hide();
   }
+
   function runGame() {
     var turnRef = dataRef.ref('turn')
 
@@ -135,15 +138,15 @@ $(document).ready(function() {
     //   });
     // }
   }
-  function playTurn () {
-  	playerOneTurn()
-    // playerTwoTurn()
-    // updateScore()
-    
+
+  function playTurn() {
+    playerOneTurn()
+    playerTwoTurn()
+    updateScore()
   }
+
   function playerOneTurn() {
     // display buttons
-    console.log('time to display buttons')
     var rockBtn = $('<button type="button" class="btn btn-info rock-btn">Rock</button>')
     var paperBtn = $('<button type="button" class="btn btn-info paper-btn">Paper</button>')
     var scissorsBtn = $('<button type="button" class="btn btn-info scissors-btn">Scissors</button>')
@@ -151,62 +154,156 @@ $(document).ready(function() {
     // $('.p1-panel').prepend(paperBtn)
     // $('.p1-panel').prepend(rockBtn)
 
-    // playersRef.child(playerIndexStr).set(newPlayer);
+    
+    $(document).on('click', '.p1-panel .btn', function() {
+      p1Clicked = $(this).text();
+      console.log('clicked: ' + p1Clicked)
+      // Hide buttons on click
+      $('.p1-panel .btn').remove()
 
+      var p1ImageDiv = $('.p1-image')
+      var p1ImageMsg = $('<p>You picked ' + p1Clicked + '!</p>')
+
+      if (p1Clicked === 'Rock') {
+        var rockImg = ('<img src="assets/images/rock.png"/>')
+        p1ImageDiv.append(rockImg, p1ImageMsg)
+
+      } 
+      if (p1Clicked === 'Paper') {
+        var paperImg = ('<img src="assets/images/paper.png"/>')
+        p1ImageDiv.append(rockImg)
+      }
+      if (p1Clicked === 'Scissors') {
+        var scissorsImg = ('<img src="assets/images/scissors.png"/>')
+        p1ImageDiv.append(scissorsImg)
+      }
+    });
+
+    // Setting new playersRef child value
+    // playersRef.child('1').set(newPlayer);
   }
-  $(document).on('click', '.scissors-btn', function() {
-    console.log('scissors btn clicked')
-  });
-  // function loadPlayerTwo() {
-  // 	dataRef.ref().on("child_added", function(snapshot) {
+  function playerTwoTurn() {
+    // display buttons
+    var rockBtn = $('<button type="button" class="btn btn-info rock-btn">Rock</button>')
+    var paperBtn = $('<button type="button" class="btn btn-info paper-btn">Paper</button>')
+    var scissorsBtn = $('<button type="button" class="btn btn-info scissors-btn">Scissors</button>')
+    $('.p2-panel').prepend(scissorsBtn, '<br/>', paperBtn, '<br/>', rockBtn)
+    // $('.p1-panel').prepend(paperBtn)
+    // $('.p1-panel').prepend(rockBtn)
 
-  //     // Log everything that's coming out of snapshot
-  //     console.log(childSnapshot.val().name);
-  //     console.log(childSnapshot.val().wins);
-  //     console.log(childSnapshot.val().losses);
+    
+    $(document).on('click', '.p2-panel .btn', function() {
+      p2Clicked = $(this).text();
+      console.log('clicked: ' + p2Clicked)
+      // Hide buttons on click
+      $('.p2-panel .btn').remove()
 
-  //     // full list of items to the well
-  //     $(".playerstatus").append("<div class='well'>Hi <span class='player-name'> " + childSnapshot.val().name +
-  //       "! You are player </span><span>" + childSnapshot.val().id +
-  //       " </span></div>");
+      var p2ImageDiv = $('.p2-image')
+      var p2ImageMsg = $('<p>You picked ' + p2Clicked + '!</p>')
+
+      if (p2Clicked === 'Rock') {
+        var rockImg = ('<img src="assets/images/rock.png"/>')
+        p2ImageDiv.append(rockImg, p2ImageMsg)
+
+      } 
+      if (p2Clicked === 'Paper') {
+        var paperImg = ('<img src="assets/images/paper.png"/>')
+        p2ImageDiv.append(rockImg)
+      }
+      if (p2Clicked === 'Scissors') {
+        var scissorsImg = ('<img src="assets/images/scissors.png"/>')
+        p2ImageDiv.append(scissorsImg)
+      }
+    });
+
+    // Setting new playersRef child value
+    // playersRef.child('2').set(newPlayer);
+  }
+  
+  function updateScore () {
+
+    return playersRef.orderByChild('name').equalTo('1').once('value').then(function(snapshot) {
+      var playername = snapshot.val().name;
+      console.log('playername')
+    });
+    var resultsText = $('.results-text')
+    resultsText.html(playername + ' wins!')
+
+    if (p1Clicked === 'Rock' && p2Clicked === 'Rock') {
+
+      return playersRef.orderByChild('name').equalTo('1').once('value').then(function(snapshot) {
+        var playername = snapshot.val().name;
+        // ...
+      });
 
 
-  //     // hide waiting for playerr msg
-  //     $('.player-2 .player-name').html(childSnapshot.val().name);
+      // var p1WinsRef = playersRef.ref('1').ref('wins')
+      // // p1WinsRef.once('1')
+      // //   .then(function(dataSnapshot) {
+      // //     winsRefvalue = dataSnapshot.val().wins
+      // //   });
+      // p1WinsRef.transaction(function(searches) {
+      //   if (searches) {
+      //     searches = searches + 1;
+      //   }
+      //   return (searches || 0) + 1;
+      // });
 
-  //     // display score in box
-  //     $('.player-2 .score').attr('visibility', 'visible');;
-  //     playerOneIsReady = 0;
+      // var winner = playerRef.child('1').
+      // resultsText.html('')
+    }
 
-  //   // Handle the errors
-  //   }, function(errorObject) {
-  //     console.log("Errors handled: " + errorObject.code);
-  //   });
-  // };
+    if (p1Clicked === 'Rock' && p2Clicked === 'Paper') {
+      
+    }
+    if (p1Clicked === 'Rock' && p2Clicked === 'Scissors') {
+      
+    }
+    if (p1Clicked === 'Paper' && p2Clicked === 'Rock') {
+
+    }
+    if (p1Clicked === 'Paper' && p2Clicked === 'Paper') {
+      
+    }
+    if (p1Clicked === 'Paper' && p2Clicked === 'Scissors') {
+      
+    }
+    if (p1Clicked === 'Scissors' && p2Clicked === 'Rock') {
+
+    }
+    if (p1Clicked === 'Scissors' && p2Clicked === 'Paper') {
+      
+    }
+    if (p1Clicked === 'Scissors' && p2Clicked === 'Scissors') {
+      
+    }
+
+    // Turn data will automatically increment after this function ends
+  }
   // function startGame() {
-  // 	showButtons();
-  // 	if (playerOneWins) {
-  // 		name = $("#player-one").val();
-	 //    console.log(name)
-	 //    // Code for the push
-	 //    dataRef.ref().push({
+  //  showButtons();
+  //  if (playerOneWins) {
+  //    name = $("#player-one").val();
+  //    console.log(name)
+  //    // Code for the push
+  //    dataRef.ref().push({
   //     name: name,
   //     wins: wins,
   //     losses: losses
   //   });
-  // 	}
-  // 	if (playerTwoWins) {
+  //  }
+  //  if (playerTwoWins) {
 
-  // 	}
+  //  }
   // }
   // Run main program 
   // loadPlayerOne();
   // loadPlayerTwo();
-  
+
   // startGame();
   // while (playerOneIsReady && playerTwoIsReady) {
-  // 	startGame();
+  //  startGame();
   // }
 
- 
+
 });

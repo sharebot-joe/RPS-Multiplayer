@@ -1,123 +1,102 @@
 <!DOCTYPE html>
 <html>
-<head>
 
-	<title>Rock Paper Scissor!</title>
-	<meta charset="UTF-8">
-	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-	<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+<head>
+  <title>Rock Paper Scissor!</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 </head>
+
 <body>
   <div class="container">
-		<div class="row">
-			<div class="col-12 header">
-				<h1>Rock Paper Scissors!</h1>
-			</div>
-		</div>
-	  <div class="row">
-			<div class="col-12">
-				<div class="login">
-					<input type="text" name="enter" class="enter" value="" id="name" placeholder=" Type name here.." />
-    			<input type="button" id="submit-button" value="Start" />
-    			<!-- onclick="addPlayer()"-->
-				</div>
-				<div class="playerstatus">
-					
-				</div>
-			</div>
-		</div>
-		<div class="row ">
-			<div class="col-12">
-				<div class="gamestatus"></div>
-			</div>
-		</div>
-		<div class="row">
-	  	<div class="col-12 col-md-4">
-	  	  <div class="player-1">
-	  	  	<div class="row">
-			  	    <div class="player-name">
-			  	      Waiting for Player 1
-			  	    </div>
-
-			  	</div>
-			  	<div class="row p1-panel">
-			  		<div class="col-4 col-md-4"></div>
-            <div class="col-4 col-md-4 p1-image">
-							<!-- <div class="image" id="rock" style="visibility:hidden;">
-								<img src="assets/images/rock.png"/>
-								<div>Rock</div>
-							</div>
-							<div class="image" id="paper" style="visibility:hidden;">
-								<img src="assets/images/paper.png"/>
-								<div>Paper</div>
-							</div>
-							<div class="image" id="scissors" style="visibility:hidden;">
-								<img src="assets/images/scissors.png"/>
-								<div>Scissors</div>
-						  </div> -->
-						</div>
-						<div class="col-4 col-md-4"></div>
-
-				  </div>
-				  <div class="row text-center">
-						<div class="score " style="visibility:hidden;">
-							Wins: <span id="wins">0</span>
-							Losses: <span id="losses">0</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-12 col-md-4">
-				<div class="results">
-					Results:
-					<div class="resultstext"></div>
-				</div>
-			</div>
-			<div class="col-12 col-md-4">
-				<div class="player-2">
-					<div class="row">
-						<div class="player-name">
-		  	      Waiting for Player 2
-		  	    </div>
-	  	    </div>
-					<div class="row">
-						<div class='p2-panel'>
-				  		<div class="col-4 col-md-4"></div>
-	            <div class="col-4 col-md-4 p2-image">
-								<!-- <div class="image" id="rock" style="visibility:hidden;">
-									<img src="assets/images/rock.png"/>
-									<div>Rock</div>
-								</div>
-								<div class="image" id="paper" style="visibility:hidden;">
-									<img src="assets/images/paper.png"/>
-									<div>Paper</div>
-								</div>
-								<div class="image" id="scissors" style="visibility:hidden;">
-									<img src="assets/images/scissors.png"/>
-									<div>Scissors</div>
-							  </div> -->
-							</div>
-					  </div>
-						<div class="col-4 col-md-4"></div>
-
-				  </div>
-				  <div class="row">
-						<div class="score" style="visibility:hidden;">
-							Wins: <span id="wins">0</span>
-							Losses: <span id="losses">0</span>
-						</div>
-	  	    </div>
-					
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<script type="text/javascript" src="assets/javascript/app.js"></script>
+    <div class="row">
+      <div class="col-12 header">
+        <h1>Rock Paper Scissors!</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="login">
+          <input type="text" name="enter" class="enter" value="" id="name" placeholder=" Type name here.." />
+          <input type="button" id="submit-button" value="Start" />
+          <!-- onclick="addPlayer()"-->
+        </div>
+        <div class="playerstatus">
+        </div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-12">
+        <div class="gamestatus"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="player-1">
+          <div class="row">
+            <div class="player-name">
+              Waiting for Player 1
+            </div>
+          </div>
+          <div class="row p1-panel">
+            <div class="col-4 col-md-4"></div>
+            <div class="col-4 col-md-4 p1-image"></div>
+            <div class="col-4 col-md-4"></div>
+          </div>
+          <div class="row text-center">
+            <div class="score " style="visibility:hidden;">
+              Wins: <span id="wins">0</span> 
+              Losses: <span id="losses">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="results">
+          Results:
+          <div class="results-text"></div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="player-2">
+          <div class="row">
+            <div class="player-name">
+              Waiting for Player 2
+            </div>
+          </div>
+          <div class="row">
+            <div class='p2-panel'>
+              <div class="col-4 col-md-4"></div>
+              <div class="col-4 col-md-4 p2-image">
+                <!-- <div class="image" id="rock" style="visibility:hidden;">
+<img src="assets/images/rock.png"/>
+<div>Rock</div>
+</div>
+<div class="image" id="paper" style="visibility:hidden;">
+<img src="assets/images/paper.png"/>
+<div>Paper</div>
+</div>
+<div class="image" id="scissors" style="visibility:hidden;">
+<img src="assets/images/scissors.png"/>
+<div>Scissors</div>
+</div> -->
+              </div>
+            </div>
+            <div class="col-4 col-md-4"></div>
+          </div>
+          <div class="row">
+            <div class="score" style="visibility:hidden;">
+              Wins: <span id="wins">0</span> Losses: <span id="losses">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/javascript/app.js"></script>
 </body>
+
 </html>
