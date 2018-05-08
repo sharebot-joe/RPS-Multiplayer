@@ -1,6 +1,6 @@
 $(function() {
 
-  // Initialize Firebase
+  // Config Firebase
   var config = {
     apiKey: "AIzaSyAhLe2mld-HlxtLFeRXQmJF_QxeFBPUbQo",
     authDomain: "rock-paper-scissors-4f31f.firebaseapp.com",
@@ -11,10 +11,10 @@ $(function() {
   // Initialize Firebase 
   firebase.initializeApp(config);
 
-  // dataRef
+  // Firebase database
   const dataRef = firebase.database();
 
-  // Other Firebase references
+  // Firebase references
   const playersRef = dataRef.ref('players')
   const turnRef = dataRef.ref('turn')
   const p1Ref = playersRef.child("1")
@@ -286,48 +286,49 @@ $(function() {
   // Accepts boolean for p1 win status. Updates html and Firebase values acordingly 
   function updateScore(p1Win, p1DataRef, p2DataRef) {
     if(p1Win === true) {
+
       // Increment P1 win in Firebase 
-      
       p1WinsRef.transaction(function(wins) {
         return (wins || 0) + 1;
       });
+
       // Increment P2 loss in Firebase
-      
       p2LossesRef.transaction(function(losses) {
         var increment = (losses || 0) + 1;
         return increment
-        console.log('increment: ' + increment)
+
+        // Update score
         var lossesDiv = $('.player-2 #losses')
         lossesDiv.html(increment)
       });
+
+      // Get Player 1 name from Firebase
       p1DataRef.once("value", function(snapshot) {
-        // Get Player 1 name from Firebase
         var player1name = snapshot.child('name').val()
-        console.log('snapshot.child("name").val(): ' + snapshot.child('name').val())
 
         // Update HTML
         var resultstext = $('.results-text')
         resultstext.text(player1name + ' wins!') 
         
+        // Update score
         var winsDiv = $('.player-1 #wins')
         winsDiv.html(snapshot.child('wins').val())
         
       });
     } else if (p1Win === false) {
+
       // Increment P2 win in Firebase 
-      
       p2WinsRef.transaction(function(wins) {
         return (wins || 0) + 1;
       });
+
       // Increment P1 loss in Firebase
-      
       p1LossesRef.transaction(function(losses) {
         return (losses || 0) + 1;
       });
       p2DataRef.once("value", function(snapshot) {
         // Get Player 2 name from Firebase
         var player2name = snapshot.child('name').val()
-        console.log('snapshot.child("name").val(): ' + snapshot.child('name').val())
 
         // Update HTML
         var resultstext = $('.results-text')
