@@ -2,6 +2,8 @@
 
 <img src="rps.jpg" alt="RPS" width="240">
 
+[Project Link](https://sharebot-joe.github.io/RPS-Multiplayer/ "RPS")
+
 ## Rock Paper Scissors!
 
 The classic game is now an online multiplayer game with the help of Firebase's realtime database.
