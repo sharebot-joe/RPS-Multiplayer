@@ -1,5 +1,7 @@
 # RPS-Multiplayer
 
+<img src="rps.jpg" alt="RPS" width="240">
+
 ## Rock Paper Scissors!
 
 The classic game is now an online multiplayer game with the help of Firebase's realtime database.
@@ -11,6 +13,7 @@ Here are the rules:
 * The game will track each player's wins and losses.
 * If you log out and log back in, the game will remember your score.
 
+Have fun and good luck!
 
 
 
